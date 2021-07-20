@@ -17,5 +17,5 @@ export const Warning = (props) => {
 	return <MaterialIcons name='warning' {...props}/>
 }
 export const Wrong = (props) => {
-	return <FontAwesome name='close' {...props}/>
+	return <MaterialIcons name='close' {...props}/>
 }

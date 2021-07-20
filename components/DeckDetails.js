@@ -7,6 +7,7 @@ import styles from '../utils/styles'
 import typography from '../utils/typography'
 import { primaryLightText, primaryText, primaryDark } from '../utils/colors'
 import Button from '../pattern/Button'
+import { quizzesStart } from '../actions/quizzes'
 
 class DeckDetails extends Component {
 	onAddCard = () => {
@@ -14,7 +15,8 @@ class DeckDetails extends Component {
 		navigation.navigate('AddCard')
 	}
 	onStartQuiz = () => {
-		const { navigation } = this.props
+		const { navigation, dispatch, cards } = this.props
+		dispatch(quizzesStart(cards))
 		navigation.navigate('Quiz')
 	}
 	render() {
@@ -38,10 +40,12 @@ class DeckDetails extends Component {
 	}
 }
 
-const mapStateToProps = ({ decks }, ownProps) => {
+const mapStateToProps = ({ decks, cards }, ownProps) => {
 	const deck = decks && decks.selected && decks.data ? decks.data[decks.selected] : null
+	const deckCards = deck && deck.cards ? deck.cards.map(id => cards[id]) : []
 	return {
 		deck,
+		cards: deckCards,
 		...ownProps
 	}
 }

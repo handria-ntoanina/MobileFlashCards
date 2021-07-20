@@ -5,7 +5,7 @@ export default function cards(state = {}, action) {
 		case QUIZZES_START:
 			return {
 				cards: action.cards.slice(1),
-				currentCard: action.cards[0],
+				currentCard: action.cards.length > 0 ? action.cards[0] : null,
 				correct: 0,
 				incorrect: 0
 			}
