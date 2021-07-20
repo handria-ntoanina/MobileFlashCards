@@ -3,8 +3,8 @@ import { View, Text, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import Button from '../pattern/Button'
 import { Question } from '../utils/icons'
-import { quizzesStop } from '../actions/quizzes'
-import { primaryLightText, primaryText, primaryDarkText } from '../utils/colors'
+import { handleQuizStart, quizzesStop } from '../actions/quizzes'
+import { primaryLightText, primaryText, primaryDarkText, primaryDark } from '../utils/colors'
 import typography from '../utils/typography'
 
 const styles = StyleSheet.create({
@@ -19,6 +19,19 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 		justifyContent: 'flex-start',
 		alignItems: 'flex-start',
+	},
+	question: {
+		flexShrink: 0,
+		marginRight: 20
+	},
+	restartButton: {
+		paddingHorizontal: 25,
+		margin: 10,
+	},
+	endButton: {
+		paddingHorizontal: 25,
+		margin: 10,
+		backgroundColor: primaryDark 
 	}
 })
 class QuizEnd extends Component {
@@ -26,15 +39,18 @@ class QuizEnd extends Component {
 		const { dispatch, navigation } = this.props
 		dispatch(quizzesStop())
 		navigation.goBack()
-		navigation.goBack()
+	}
+	onRestart = () => {
+		const { dispatch, cards } = this.props
+		dispatch(handleQuizStart(cards))
 	}
 	render() {
 		const { correct, incorrect } = this.props
 		return (<>
 			<View style={styles.container}>
-				<Question color={primaryLightText} style={{ flexShrink: 0, marginHorizontal: 20 }} size={50} />
+				<Question color={primaryLightText} style={styles.question} size={50} />
 				<View styles={styles.textContainer}>
-					<Text style={[{ color: primaryDarkText}, typography.message]}>
+					<Text style={[{ color: primaryDarkText }, typography.message]}>
 						Congratulations! You have finished the quiz. Here is your score
 					</Text>
 				</View>
@@ -42,17 +58,23 @@ class QuizEnd extends Component {
 			<Text style={[{ color: primaryDarkText }, typography.header1]}>
 				{correct} / {correct + incorrect}
 			</Text>
+			<Button onPress={this.onRestart}
+				label='Restart Quiz' style={styles.restartButton}
+				textColor={primaryText} />
 			<Button onPress={this.onPress}
-				label='End the quiz' style={{ paddingHorizontal: 25, margin: 10 }}
+				label='Back to Deck' style={styles.endButton}
 				textColor={primaryText} />
 		</>)
 	}
 }
 
-const mapStateToProps = ({ quizzes }, ownProps) => {
+const mapStateToProps = ({ decks, quizzes }, ownProps) => {
+	const deck = decks && decks.selected && decks.data ? decks.data[decks.selected] : null
+	const deckCards = deck && deck.cards ? deck.cards.map(id => cards[id]) : []
 	return {
 		correct: quizzes ? quizzes.correct : 0,
 		incorrect: quizzes ? quizzes.incorrect : 0,
+		cards: deckCards,
 		...ownProps
 	}
 }

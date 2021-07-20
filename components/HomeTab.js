@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 import { Text } from 'react-native'
 import { handleReceiveData } from '../actions/shared'
+import { handleInitialSchedule } from '../actions/notifications'
 import { primary, primaryText } from '../utils/colors'
 import { Book, Add } from '../utils/icons'
 import DecksList from './DecksList'
@@ -20,6 +21,7 @@ class HomeTab extends Component {
 	componentDidMount = () => {
 		const { dispatch } = this.props
 		dispatch(handleReceiveData())
+		dispatch(handleInitialSchedule())
 	}
 	render() {
 		return (

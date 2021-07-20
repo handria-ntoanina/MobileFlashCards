@@ -21,10 +21,11 @@ class DeckAdd extends Component {
 			alert('Please enter a deck title')
 			return
 		}
-		const { dispatch } = this.props
+		const { dispatch, navigation } = this.props
 		dispatch(decksAdd(deckTitle))
 		this.setState({ deckTitle: '' })
-		this.props.navigation.goBack()
+		navigation.goBack()
+		navigation.navigate('DeckDetails')
 	}
 	render() {
 		return (<View style={styles.displayAtScreenCenter}>

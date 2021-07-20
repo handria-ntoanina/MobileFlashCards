@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React, { useRef } from 'react'
 import { connect } from 'react-redux'
 import { decksSelect } from '../actions/decks'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { Book } from '../utils/icons'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Animated } from 'react-native'
 import { primaryLightText, primaryDarkText, primary, primaryBackGround } from '../utils/colors'
 import typography from '../utils/typography'
 
@@ -27,15 +27,28 @@ const styles = StyleSheet.create({
 })
 
 const Deck = ({ deck, navigation, dispatch }) => {
+	const bounceValue = useRef(new Animated.Value(1)).current
 	const onPress = () => {
-		dispatch(decksSelect(deck.id))
-		navigation.navigate('DeckDetails')
+		Animated.sequence([
+			Animated.timing(bounceValue, { duration: 200, toValue: 1.15, useNativeDriver: true }),
+			Animated.spring(bounceValue, { toValue: 1, useNativeDriver: true, speed: 12 })
+		]).start(({ finished }) => {
+			dispatch(decksSelect(deck.id))
+			navigation.navigate('DeckDetails')
+		})
+	}
+	const onPressIn = () => {
+		Animated.timing(bounceValue, { duration: 200, toValue: 1.15, useNativeDriver: true }).start()
+	}
+	const onPressOut = () => {
+		Animated.spring(bounceValue, { toValue: 1, useNativeDriver: true, speed: 12 })
+			.start()
 	}
 	if (!deck)
 		return null
-	return (<TouchableOpacity onPress={onPress}>
-		<View style={styles.container}>
-			<Book color={primaryLightText} style={{ flexShrink: 0, marginHorizontal: 20 }} size={50}/>
+	return (<TouchableOpacity onPress={onPress} onPressIn={onPressIn} onPressOut={onPressOut}>
+		<Animated.View style={[styles.container, { transform: [{ scale: bounceValue }] }]}>
+			<Book color={primaryLightText} style={{ flexShrink: 0, marginHorizontal: 20 }} size={50} />
 			<View styles={styles.textContainer}>
 				<Text style={[{ color: primaryDarkText }, typography.header2]}>
 					{deck.title}
@@ -44,7 +57,7 @@ const Deck = ({ deck, navigation, dispatch }) => {
 					{deck.cards ? deck.cards.length : 0} cards
 				</Text>
 			</View>
-		</View>
+		</Animated.View>
 	</TouchableOpacity>)
 }
 

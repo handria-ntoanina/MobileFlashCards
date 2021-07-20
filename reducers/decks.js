@@ -6,7 +6,7 @@ export default function cards(state = {}, action) {
 		case DECKS_ADD:
 			const { deck } = action
 			return {
-				selected: null,
+				selected: deck.id,
 				data: {
 					...state.data,
 					[deck.id]: deck

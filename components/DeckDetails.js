@@ -7,7 +7,7 @@ import styles from '../utils/styles'
 import typography from '../utils/typography'
 import { primaryLightText, primaryText, primaryDark } from '../utils/colors'
 import Button from '../pattern/Button'
-import { quizzesStart } from '../actions/quizzes'
+import { handleQuizStart } from '../actions/quizzes'
 
 class DeckDetails extends Component {
 	onAddCard = () => {
@@ -16,7 +16,7 @@ class DeckDetails extends Component {
 	}
 	onStartQuiz = () => {
 		const { navigation, dispatch, cards } = this.props
-		dispatch(quizzesStart(cards))
+		dispatch(handleQuizStart(cards))
 		navigation.navigate('Quiz')
 	}
 	render() {
