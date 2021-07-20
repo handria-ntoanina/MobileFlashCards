@@ -1,3 +1,4 @@
+import React from 'react'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons'
 
 export const Add = (props) => {

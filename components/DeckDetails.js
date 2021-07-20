@@ -1,10 +1,50 @@
 import React, { Component } from 'react'
-import { Text } from 'react-native'
+import { connect } from 'react-redux'
+import { View, Text } from 'react-native'
+import NoCard from '../pattern/NoCard'
+import DeckWithCards from '../pattern/DeckWithCards'
+import styles from '../utils/styles'
+import typography from '../utils/typography'
+import { primaryLightText, primaryText, primaryDark } from '../utils/colors'
+import Button from '../pattern/Button'
 
 class DeckDetails extends Component {
+	onAddCard = () => {
+		const { navigation } = this.props
+		navigation.navigate('AddCard')
+	}
+	onStartQuiz = () => {
+		const { navigation } = this.props
+		navigation.navigate('Quiz')
+	}
 	render() {
-		return (<Text>DeckDetails</Text>)
+		const { deck } = this.props
+		if (!deck)
+			return null
+		return (
+			<View style={styles.displayAtScreenCenter}>
+				<Text style={[typography.header1, { color: primaryLightText }]}>
+					{deck.title}
+				</Text>
+				{deck.cards && deck.cards.length > 0 && <DeckWithCards count={deck.cards.length} />}
+				{(!deck.cards || !deck.cards.length) && <NoCard />}
+				<Button onPress={this.onAddCard} label='Add a new card' 
+					style={{ alignSelf: 'stretch', marginTop: 50 }} 
+					textColor={primaryText} />
+				{deck.cards && deck.cards.length > 0 && <Button onPress={this.onStartQuiz} label='Start a quiz' 
+									style={{ alignSelf: 'stretch', marginTop: 10, backgroundColor: primaryDark }} 
+									textColor={primaryText} />}
+			</View>)
 	}
 }
 
-export default DeckDetails
+const mapStateToProps = ({ decks }, ownProps) => {
+	const deck = decks && decks.selected && decks.data ? decks.data[decks.selected] : null
+	return {
+		deck,
+		...ownProps
+	}
+}
+
+
+export default connect(mapStateToProps)(DeckDetails)

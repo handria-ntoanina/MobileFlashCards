@@ -1,5 +1,5 @@
-import { DECKS_ADD, DECKS_SELECT, DECKS_ADD_CARD } from '../actions/decks'
-import { DECKS_LOAD } from '../actions/shared'
+import { DECKS_ADD, DECKS_SELECT } from '../actions/decks'
+import { RECEIVE_DATA, ADD_CARD } from '../actions/shared'
 
 export default function cards(state = {}, action) {
 	switch (action.type) {
@@ -12,12 +12,14 @@ export default function cards(state = {}, action) {
 					[deck.id]: deck
 				}
 			}
-		case DECKS_ADD_CARD:
-			const { deckId, cardId } = action
+		case ADD_CARD:
+			const { deckId, card } = action
+			const cardId = card.id
 			const deckToEdit = state.data[deckId]
+			const cards = deckToEdit.cards ? deckToEdit.cards : []
 			const newDeck = {
 				...deckToEdit,
-				cards: [...deckToEdit.cards, cardId]
+				cards: [...cards, cardId]
 			}
 			return {
 				...state,
@@ -27,8 +29,8 @@ export default function cards(state = {}, action) {
 				}
 			}
 		case DECKS_SELECT:
-			return { ...state, selected: action.selectedDeck }
-		case DECKS_LOAD:
+			return { ...state, selected: action.selectedDeckId }
+		case RECEIVE_DATA:
 			return { selected: null, data: action.decks }
 		default:
 			return state

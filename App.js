@@ -11,22 +11,38 @@ import HomeTab from './components/HomeTab'
 import DeckDetails from './components/DeckDetails'
 import AddCard from './components/AddCard'
 import Quiz from './components/Quiz'
-import { primaryDark } from './utils/colors'
+import { primary, primaryDark, primaryText } from './utils/colors'
+import Constants from 'expo-constants'
+
+const AppStatusBar = ({ backgroundColor, ...props }) => {
+  return (<View style={{ backgroundColor, height: Constants.statusBarHeight }}>
+    <StatusBar backgroundColor={backgroundColor} {...props} />
+  </View>)
+}
+
 
 const Stack = createStackNavigator()
 
 const store = createStore(reducer, middleware)
 export default function App() {
+  const getScreenOptions = (title) => {
+    return {
+      title, headerTitleAlign: 'center',
+      headerStyle: { backgroundColor: primary },
+      headerTintColor: primaryText,
+    }
+  }
+
   return (
     <Provider store={store}>
       <View style={{ flex: 1 }}>
-        <StatusBar backgroundColor={primaryDark} />
+        <AppStatusBar backgroundColor={primaryDark} />
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="HomeTab" component={HomeTab} options={{headerShown: false}}/>
-            <Stack.Screen name="DeckDetails" component={DeckDetails}/>
-            <Stack.Screen name="AddCard" component={AddCard}/>
-            <Stack.Screen name="Quiz" component={Quiz}/>
+            <Stack.Screen name="HomeTab" component={HomeTab} options={getScreenOptions('Flash Cards')} />
+            <Stack.Screen name="DeckDetails" component={DeckDetails} options={getScreenOptions('Deck Details')} />
+            <Stack.Screen name="AddCard" component={AddCard} options={getScreenOptions('Adding a Card')} />
+            <Stack.Screen name="Quiz" component={Quiz} options={getScreenOptions('Running a Quiz')} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>
