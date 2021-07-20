@@ -1,5 +1,6 @@
 # Mobile Flashcards
 This is an Android application that allows users to study collections of flashcards.
+
 ![enter image description here](https://github.com/handria-ntoanina/MobileFlashCards/blob/main/assets/main-screen.jpg?raw=true)
 
 It is using the react-native framework thanks to the set of tools of [expo](https://docs.expo.io/)
