@@ -1,9 +1,21 @@
 {
   "expo": {
+    "sdkVersion": "42.0.0",
     "name": "MobileFlashCards",
     "slug": "MobileFlashCards",
     "version": "1.0.0",
     "orientation": "portrait",
+    "description": "An Android application that allows users to study collections of flashcards",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.modernant.MobileFlashcards"
+    },
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
@@ -16,15 +28,6 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
-    },
     "web": {
       "favicon": "./assets/favicon.png"
     }

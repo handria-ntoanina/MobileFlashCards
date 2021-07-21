@@ -68,7 +68,7 @@ class QuizEnd extends Component {
 	}
 }
 
-const mapStateToProps = ({ decks, quizzes }, ownProps) => {
+const mapStateToProps = ({ decks, quizzes, cards }, ownProps) => {
 	const deck = decks && decks.selected && decks.data ? decks.data[decks.selected] : null
 	const deckCards = deck && deck.cards ? deck.cards.map(id => cards[id]) : []
 	return {
